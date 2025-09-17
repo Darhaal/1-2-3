@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+
+
+    <style>
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+        }
+
+        .container {
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-bars-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(50%);
+        }
+        
+        .loading-bar-container {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 7px;
+            box-sizing: border-box;
+            text-align: center;
+            margin: 2.5%;
+        }
+
+        .loading-text {
+            position: absolute;
+            z-index: 2;
+            transform: translateY(-50%);
+        }
+
+        .loading-bar {
+            position: absolute;
+            z-index: 1;
+            height: 100%;
+            width: 100%;
+            border-radius: 4px;
+            box-sizing: border-box;
+            animation: empty 5s linear forwards;
+        }
+
+        #equation {
+            text-align: center;
+        }
+
+        .score {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .restartButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .modalResultMessage {
+            position: relative;
+            text-align: center;
+            top: -15%;
+        }
+
+        .container_moon, .container_sun {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .container_lang1 {
+            display: flex;
+            position: fixed;
+            bottom: 10px;
+            right: 45px;
+            cursor: pointer;
+            z-index: 2;
+          }
+
+        .container_lang2 {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            right: 45px;
+            cursor: pointer;
+            z-index: 2;
+          }
+
+        @media (orientation: portrait) {
+        
+            .container {
+                height: 100%;
+                width: 100%;
+            }
+
+            .loading-bars-container {
+                height: 25%;
+                width: 30vh;
+                max-width: 50%;
+            }
+              
+            .loading-bar-container {
+                width: 100%;
+                height: 30%;
+                max-height: 30px;
+            }
+
+            .loading-text {
+                width: 100%;
+                font-size: 48sp;
+                top: 50%;
+            }
+
+            #equation {
+                width: 80%;
+                font-size: 6vmin;
+            }
+
+            .score {
+                margin-top: 1%;
+                font-size: 10vmin;
+                border-radius: 50px;
+                padding: 10px;
+            }
+
+            .modal-content {
+                width: 75%;
+                height: 25%;
+                border-radius: 50px;
+            }
+
+            .restartButton {
+            	width: 40%;
+                height: 20%;
+                min-width: 100px;
+                margin: 0 auto;
+                bottom: 20px;
+                border-radius: 10px;
+            }
+
+            .modalResultMessage {
+                width: 75%;
+                height: 25%;
+                font-size: 3vmin;
+            }
+
+            .container_moon, .container_sun {
+                width: 2%;
+                height: 2%;
+            }
+
+            .container_lang1 {
+                width: 2%;
+                height: 2%;
+            }
+
+            .container_lang2 {
+                width: 2%;
+                height: 2%;
+            }
+        }
+
+        @media (orientation: landscape) {
+        
+            .container {
+                height: 100%;
+                width: 100%;
+            }
+
+            .loading-bars-container {
+                height: 25%;
+                width: 30vmin;
+            }
+              
+            .loading-bar-container {
+                width: 100%;
+                height: 30%;
+                max-height: 40px;
+            }
+
+            .loading-text {
+                width: 100%;
+                font-size: 48sp;
+                top: 50%;
+            }
+
+            #equation {
+                width: 80%;
+                font-size: 6vmin;
+            }
+
+            .score {
+                margin-top: 1%;
+                font-size: 10vmin;
+                border-radius: 50px;
+                padding: 10px;
+            }
+
+            .modal-content {
+                width: 75%;
+                height: 25%;
+                border-radius: 50px;
+            }
+
+            .restartButton {
+                width: 20%;
+                height: 20%;
+                min-width: 100px;
+                margin: 0 auto;
+                bottom: 20px;
+                border-radius: 10px;
+            }
+
+            .modalResultMessage {
+                width: 75%;
+                height: 25%;
+                font-size: 3vmin;
+            }
+
+            .container_moon, .container_sun {
+                width: 2%;
+                height: 2%;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .container_lang1 {
+                width: 2%;
+                height: 2%;
+                bottom: 10px;
+                right: 45px;
+            }
+
+            .container_lang2 {
+                width: 2%;
+                height: 2%;
+                bottom: 10px;
+                right: 45px;
+            }
+        }
+        
+        .fas.fa-moon {
+            color: #310062;
+            position: fixed;
+        }
+
+        .fas.fa-sun {
+            color: #fdf0e3;
+            position: fixed;
+        }
+
+        .container.light-mode {
+            background: radial-gradient(circle at 60% 45%, #310062 0%, #000000 100%);
+        }
+
+        .lang1.light-mode, .lang2.light-mode, .loading-text.light-mode, .restartButton.light-mode, .modalResultMessage.light-mode, .score.light-mode {
+            color: #000000;
+        }
+
+        .loading-bar-container.light-mode {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .loading-bar.light-mode {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-content.light-mode {
+            background: radial-gradient(circle at 45% 55%, rgba(253, 240, 227, 0.9) 60%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .restartButton.light-mode {
+            background-color: rgba(204, 158, 113, 0.1);
+        }
+
+        #equation.light-mode {
+            color: #f0f8ff;
+        }
+
+
+        .container.dark-mode {
+            background: radial-gradient(circle at 55% 48%, rgba(253, 240, 227, 1.0) 40%, rgba(204, 158, 113, 0.5) 90%);
+        }
+
+        .lang1.dark-mode, .lang2.dark-mode, .loading-text.dark-mode, .restartButton.dark-mode, .modalResultMessage.dark-mode, .dark-mode.score.dark-mode {
+            color: #f0f8ff;
+        }
+
+        .loading-bar-container.dark-mode {
+            border: 2px solid rgba(212, 192, 172, 0.3);
+        }
+
+        .loading-bar.dark-mode {
+            background-color: rgba(251, 227, 203, 0.2);
+            border: 2px solid rgba(212, 192, 172, 0.2);
+        }
+
+        .modal-content.dark-mode {
+            background: radial-gradient(circle at 60% 45%, rgba(49, 0, 98, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .restartButton.dark-mode {
+            background-color: rgba(119, 84, 149, 0.1);
+        }
+
+        #equation.dark-mode {
+            color: #000000;
+        }
+
+        .game-over-animation {
+            animation: slideInFromTop 1s ease-out forwards;
+        }
+
+        @keyframes questionOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes questionIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes empty {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(200%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+
+
+<body>
+
+    <div class="container_moon" onclick="toggleDarkMode();">
+        <i class="fas fa-moon" id="moonIcon"></i>
+    </div>
+
+    <div class="container_sun" onclick="toggleDarkMode();">
+        <i class="fas fa-sun" id="sunIcon"></i>
+    </div>
+
+    <div class="container_lang1" onclick="toggleLang();">
+        <i class="lang1" id="lang1icon"><b>EN</b></i>
+    </div>
+
+    <div class="container_lang2" onclick="toggleLang();">
+        <i class="lang2" id="lang2icon"><b>RU</b></i>
+    </div>
+
+    <div class="score">0</div>
+    <div class="container">
+
+        <p id="equation"></p>
+        <div class="loading-bars-container">
+
+            <div class="loading-bar-container" onclick="checkAnswer(1);">
+                <div class="loading-bar" id="loading-bar-1"></div>
+                <div class="loading-text">1</div>
+            </div>
+
+            <div class="loading-bar-container" onclick="checkAnswer(2);">
+                <div class="loading-bar" id="loading-bar-2"></div>
+                <div class="loading-text">2</div>
+            </div>
+
+            <div class="loading-bar-container" onclick="checkAnswer(3);">
+                <div class="loading-bar" id="loading-bar-3"></div>
+                <div class="loading-text">3</div>
+            </div>
+        </div>
+
+        <div id="restartModal" class="modal">
+            <div class="modal-content" id="modalContent">
+                <div class="modalResultMessage"></div>
+                <div class="restartButton" onclick="restartGame()">Restart</div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+    const modal = document.getElementById('restartModal');
+
+    var correctAnswers = 0;
+    var Res = 0;
+    var score = 0;
+    var allsum = 0;
+    var yourscore = 0;
+
+    var timer;
+
+    var firstRound = true;
+    var animationend = true;
+    var restartRound = false;
+	var darkMode = false;
+    var langru = false;
+
+
+    function toggleDarkMode() {
+      const container = document.querySelector('.container');
+      const score = document.querySelector('.score');
+      const modalResultMessage = document.querySelector('.modalResultMessage');
+      const restartButton = document.querySelector('.restartButton');
+      const modalcontent = document.querySelector('.modal-content');
+      const loadingTexts = document.querySelectorAll('.loading-text');
+      const loadingBars = document.querySelectorAll('.loading-bar');
+      const loadingContainers = document.querySelectorAll('.loading-bar-container');
+      const lang1 = document.querySelector('.lang1');
+      const lang2 = document.querySelector('.lang2');
+      const containerMoon = document.querySelector('.container_moon');
+      const containerSun = document.querySelector('.container_sun');
+  	  const equation = document.getElementById('equation');
+
+      darkMode = !darkMode;
+
+      container.classList.toggle('dark-mode', darkMode);
+      container.classList.toggle('light-mode', !darkMode);
+
+      score.classList.toggle('dark-mode', !darkMode);
+      score.classList.toggle('light-mode', darkMode);
+
+      modalResultMessage.classList.toggle('dark-mode', !darkMode);
+      modalResultMessage.classList.toggle('light-mode', darkMode);
+
+      restartButton.classList.toggle('dark-mode', !darkMode);
+      restartButton.classList.toggle('light-mode', darkMode);
+
+      modalcontent.classList.toggle('dark-mode', !darkMode);
+      modalcontent.classList.toggle('light-mode', darkMode);
+
+      loadingTexts.forEach((loadingText) => {
+        loadingText.classList.toggle('dark-mode', !darkMode);
+        loadingText.classList.toggle('light-mode', darkMode);
+      });
+
+      loadingBars.forEach((loadingBar) => {
+        loadingBar.classList.toggle('dark-mode', darkMode);
+        loadingBar.classList.toggle('light-mode', !darkMode);
+      });
+
+      loadingContainers.forEach((loadingContainer) => {
+        loadingContainer.classList.toggle('dark-mode', darkMode);
+        loadingContainer.classList.toggle('light-mode', !darkMode);
+      });
+
+      containerMoon.style.display = darkMode ? 'flex' : 'none';
+      containerSun.style.display = darkMode ? 'none' : 'flex';
+
+      lang1.classList.toggle('dark-mode', !darkMode);
+      lang1.classList.toggle('light-mode', darkMode);
+      lang2.classList.toggle('dark-mode', !darkMode);
+      lang2.classList.toggle('light-mode', darkMode);
+
+      equation.classList.toggle('dark-mode', darkMode);
+      equation.classList.toggle('light-mode', !darkMode);
+    }
+
+
+	function toggleLang() {
+      const containerlang1 = document.querySelector('.container_lang1');
+      const containerlang2 = document.querySelector('.container_lang2');
+      const lang1 = document.querySelector('.lang1');
+      const lang2 = document.querySelector('.lang2');
+      const container = document.querySelector('.container');
+
+      langru=!langru;
+      containerlang1.style.display = langru ? 'none' : 'flex';
+      containerlang2.style.display = langru ? 'flex' : 'none';
+
+      const translations = {
+        en: {
+          gameOver: 'Game Over! You get ',
+          tokens: ' tokens!',
+          restart: 'Restart',
+        },
+        ru: {
+          gameOver: 'Игра окончена! Вы получаете ',
+          tokens: ' токенов!',
+          restart: 'Перезапустить',
+        },
+      };
+
+      document.querySelector('.modalResultMessage').textContent = translations[langru ? 'ru' : 'en'].gameOver + yourscore + translations[langru ? 'ru' : 'en'].tokens;
+      document.querySelector('.restartButton').textContent = translations[langru ? 'ru' : 'en'].restart;
+    }
+
+
+    function isModalDisplayed() {
+        return getComputedStyle(modal).display === 'flex';
+      }
+
+
+	function updateScore() {
+      document.querySelector('.score').textContent = Math.round(score / 10);
+    }
+
+
+    function resetLoading(loadingBar) {
+      loadingBar.style.width = '100%';
+      loadingBar.style.animation = 'none';
+      void loadingBar.offsetWidth;
+      loadingBar.style.animation = 'empty 5s linear forwards';
+    }
+
+
+    function resetAllLoadings(x) {
+      if(x){
+        var loadingBars = document.querySelectorAll('.loading-bar');
+        loadingBars.forEach(function (loadingBar) {
+          resetLoading(loadingBar);
+        });
+      }
+    }
+
+
+    function stopAllLoadings() {
+      var loadingBars = document.querySelectorAll('.loading-bar');
+      loadingBars.forEach(function (loadingBar) {
+        var computedStyle = window.getComputedStyle(loadingBar);
+        loadingBar.style.animationPlayState = 'paused';
+      });
+    }
+
+
+    function generateEquation() {
+      const parameters = [1, 2, 3];
+      const operators = ['+', '-'];
+      var newResult=0;
+      do {
+        newResult = parameters[Math.floor(Math.random() * parameters.length)];
+      } while (Res === newResult);
+      rightSide = newResult;
+      let leftSide = '';
+      while (eval(leftSide) !== rightSide) {
+        leftSide = '';
+        for (let j = 0; j < (2 + Math.floor(correctAnswers / 5)); j++) {
+          const parameter = parameters[Math.floor(Math.random() * parameters.length)];
+          const operator = operators[Math.floor(Math.random() * operators.length)];
+          allsum += parameter;
+          leftSide += (j == 0) ? `${parameter}` : ` ${operator} ${parameter}`;
+        }
+      }
+      return { leftSide, rightSide };
+    }
+
+
+    function generateAndDisplayEquation() {
+      const equationElement = document.getElementById('equation');
+      const { leftSide, rightSide } = generateEquation();
+      animationend=false;
+      clearTimeout(timer);
+      Res = rightSide;
+      if (firstRound) {
+        equationElement.textContent = `${leftSide} = ?`;
+        equationElement.style.animation = 'questionIn 1s ease-in forwards';
+        firstRound = false;
+        setTimeout(() => {
+			animationend=true;
+        }, 1000);
+      } else {
+        equationElement.style.animation = 'questionOut 0.5s ease-in forwards';
+            setTimeout(() => {
+                equationElement.textContent = `${leftSide} = ?`;
+                equationElement.style.animation = 'questionIn 0.5s ease-in forwards';
+                setTimeout(() => {
+                    if(!restartRound) resetAllLoadings(1);
+                    else restartRound=false;
+                    animationend=true;
+                  }, 500);
+              }, 500);
+      timer = setTimeout(endGame, 6000);
+      }
+    }
+
+
+    function checkAnswer(buttonNumber) {
+      if (!isModalDisplayed() && animationend) {
+      	stopAllLoadings();
+        if (buttonNumber == Res) {
+          correctAnswers++;
+          score += allsum * Math.ceil(correctAnswers / 5);
+          allsum = 0;
+          updateScore();
+          generateAndDisplayEquation();
+        }
+        else {
+          endGame();
+        }
+      }
+    }
+
+
+    function endGame() {
+      yourscore = correctAnswers;
+      const xMultiplier = 0.95;
+      for (let x = 1; x <= correctAnswers; x++) {
+        yourscore += 1 * Math.pow(xMultiplier, x / 5);
+      }
+      clearTimeout(timer);
+      yourscore/=10;
+      yourscore = yourscore.toFixed(2);
+      correctAnswers = 0;
+      stopAllLoadings();
+      const modalResultMessage = document.querySelector('.modalResultMessage');
+      if(!langru) modalResultMessage.textContent = 'Game Over! You get ' + yourscore + ' tokens!';
+      const modalContent = document.querySelector('.modal-content');
+      modalContent.style.display = 'flex';
+      modalContent.classList.add('game-over-animation');
+      modal.style.display = 'flex';
+      modal.style.display = 'flex';
+    }
+
+
+    function restartGame() {
+      firstRound = true;
+      resetAllLoadings(1);
+      stopAllLoadings();
+      modal.style.display = 'none';
+      generateAndDisplayEquation();
+      score = 0;
+      updateScore();
+    }
+
+
+    window.onload = function () {
+      restartGame()
+      toggleDarkMode();
+    }
+
+
+    </script>
+</body>
+</html>
